@@ -29,7 +29,6 @@ class MqttHandler {
         // When a message arrives, console.log it
         this.mqttClient.on('message', async (topic, message) => {
             const data = new Data({
-                user: "Bin dep trai nhat qua dat",
                 topic: topic,
                 message: message,
             })

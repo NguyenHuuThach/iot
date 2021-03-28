@@ -1,34 +1,68 @@
 require('dotenv/config')
 const PORT = process.env.PORT || 3001
-const express = require('express')
-const bodyParser = require('body-parser');
-const cors = require('cors')
+
+const express = require("./expressBin.js")
+const app = express.init()
+
 const mongoose = require('mongoose')
-const mqttHandler = require('./mqtt_handler');
-// Routes
-const setData = require('./Routes/data')
-const app = express()
-// Ket noi mqtt Client
-const mqttClient = new mqttHandler();
-mqttClient.connect();
+
+const http = require('http')
+const server = http.createServer(app);
+const io = require('socket.io')(server);
+
+
+io.of('/tracking').on("connection", (socket) => {
+    console.log("socket.io: User connected: ", socket.id);
+
+    socket.on("disconnect", () => {
+        console.log("socket.io: User disconnected: ", socket.id);
+    });
+});
+
+
+//start the server
+server.listen(PORT, () => console.log(`Server now running on http://localhost:${PORT}`));
+
+
+
+//connect to db
+mongoose.connect(process.env.CONNECTION_DB, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+});
+
+const connection = mongoose.connection;
+
+connection.once("open", () => {
+    console.log("MongoDB database connected");
+
+    const ChangeStream = connection.collection("set datas").watch();
+
+    ChangeStream.on("change", (change) => {
+        switch (change.operationType) {
+            case "insert":
+                const data = {
+                    user: JSON.parse(change.fullDocument.message).user,
+                    topic: change.fullDocument.topic,
+                    isStart: JSON.parse(change.fullDocument.message).isStart,
+                    date: change.fullDocument.date
+                };
+                io.of('/tracking').emit("newAction", data);
+                break;
+
+            case "delete":
+                io.of('/tracking').emit("deletedData", change.documentKey._id);
+                break;
+        }
+    });
+});
+
+
+connection.on("error", (error) => console.log("Error: " + error));
 
 
 
 
-// Middlewares third-party
-app.use(bodyParser.json({ limit: '30mb', extended: true }))
-app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }))
-app.use(cors())
-// use routes
-app.use('/', setData)
 
-
-
-
-
-// Ket noi DATABASE va bat dau listening server
-mongoose.connect(process.env.CONNECTION_DB, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => app.listen(PORT, () => console.log(`Server is running on http://localhost:${PORT}`)))
-    .catch((error) => console.log(error.message))
-// Khong nhan bat ky log warnings nao
-mongoose.set('useFindAndModify', false)
