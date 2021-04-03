@@ -1,16 +1,16 @@
 const mongoose = require('mongoose')
 
 const data = mongoose.Schema({
-    user: {
-        type: String,
-        require: true
-    },
     topic: {
         type: String,
         required: true
     },
-    message: {
+    user: {
         type: String,
+        required: true
+    },
+    isStart: {
+        type: Boolean,
         required: true
     },
     date: {

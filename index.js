@@ -41,12 +41,15 @@ connection.once("open", () => {
     const ChangeStream = connection.collection("set datas").watch();
 
     ChangeStream.on("change", (change) => {
+        console.log("================ Day la du lieu real time ================")
+        console.log(change.fullDocument)
+        console.log("==========================================================")
         switch (change.operationType) {
             case "insert":
                 const data = {
-                    user: JSON.parse(change.fullDocument.message).user,
                     topic: change.fullDocument.topic,
-                    isStart: JSON.parse(change.fullDocument.message).isStart,
+                    user: change.fullDocument.user,
+                    isStart: change.fullDocument.isStart,
                     date: change.fullDocument.date
                 };
                 io.of('/tracking').emit("newAction", data);

@@ -28,15 +28,16 @@ class MqttHandler {
 
         // When a message arrives, console.log it
         this.mqttClient.on('message', async (topic, message) => {
-            const data = new Data({
-                topic: topic,
-                message: message,
-            })
-
             try {
+                const data = new Data({
+                    topic: topic,
+                    user: JSON.parse(message).user,
+                    isStart: JSON.parse(message).isStart
+                })
+                this.sendMessage(message)
                 await data.save()
             } catch {
-                console.log("Loi roi Thach oi !!!")
+                console.log("Loi roi Thach oi !!! ")
             }
         });
 
