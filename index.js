@@ -41,9 +41,7 @@ connection.once("open", () => {
     const ChangeStream = connection.collection("set datas").watch();
 
     ChangeStream.on("change", (change) => {
-        console.log("================ Day la du lieu real time ================")
-        console.log(change.fullDocument)
-        console.log("==========================================================")
+
         switch (change.operationType) {
             case "insert":
                 const data = {
@@ -53,6 +51,9 @@ connection.once("open", () => {
                     date: change.fullDocument.date
                 };
                 io.of('/tracking').emit("newAction", data);
+                console.log("================ Day la du lieu real time ================")
+                console.log(data)
+                console.log("==========================================================")
                 break;
 
             case "delete":
