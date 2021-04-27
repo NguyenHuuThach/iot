@@ -1,16 +1,10 @@
 const express = require('express')
 const router = express.Router()
-const Data = require('../Schema/data')
+const { getHistory } = require('../controllers/dataController')
 
 // Routes
-router.get('/', async (req, res) => {
-    try {
-        const set_data = await Data.find()
-        res.status(200).json(set_data)
-    } catch (error) {
-        res.status(400).json({ message: error })
-    }
-})
+router.get('/history', getHistory)
+
 
 module.exports = router
 

@@ -30,7 +30,7 @@ mongoose.connect(process.env.CONNECTION_DB, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true,
-    useFindAndModify: false,
+    useFindAndModify: true
 });
 
 const connection = mongoose.connection;

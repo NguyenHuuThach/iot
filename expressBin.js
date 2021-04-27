@@ -1,8 +1,12 @@
 const express = require('express')
 const bodyParser = require('body-parser');
 const cors = require('cors')
+const path = require('path')
 const mqttHandler = require('./mqtt_handler');
 const setData = require('./Routes/data'); // Routes
+const plants = require('./Routes/plant'); // Routes
+const suggestionPlants = require('./Routes/suggestion_plant'); // Routes
+const infoIOTs = require('./Routes/info_iot'); // Routes
 
 module.exports.init = () => {
     const app = express()
@@ -17,6 +21,11 @@ module.exports.init = () => {
     app.use(cors())
     // use routes
     app.use('/', setData)
+    app.use('/plants', plants)
+    app.use('/suggestion-plants', suggestionPlants)
+    app.use('/info-iots', infoIOTs)
+
+    app.use('/public', express.static(path.join(__dirname, 'public')))
 
 
     return app;
