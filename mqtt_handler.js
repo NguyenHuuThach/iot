@@ -36,7 +36,8 @@ class MqttHandler {
                 const data = new Data({
                     topic: topic,
                     user: JSON.parse(message).user,
-                    isStart: JSON.parse(message).isStart
+                    isStart: JSON.parse(message).isStart,
+                    humidity: JSON.parse(message).humidity || null
                 })
                 this.sendMessage(message)
                 await data.save()

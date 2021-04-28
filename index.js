@@ -48,6 +48,7 @@ connection.once("open", () => {
                     topic: change.fullDocument.topic,
                     user: change.fullDocument.user,
                     isStart: change.fullDocument.isStart,
+                    humidity: change.fullDocument.humidity,
                     date: change.fullDocument.date
                 };
                 io.of('/tracking').emit("newAction", data);
