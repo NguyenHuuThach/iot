@@ -9,9 +9,19 @@ const infoIOTs = mongoose.Schema({
         type: String,
         required: true
     },
-    image: {
+    fileName: {
+        type: String
+    },
+    filePath: {
+        type: String
+    },
+    fileType: {
+        type: String
+    },
+    fileSize: {
         type: String
     }
-})
+}, { timestamps: true })
+
 
 module.exports = mongoose.model('info iots', infoIOTs)

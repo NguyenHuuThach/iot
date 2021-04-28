@@ -63,11 +63,12 @@ const updatePlant = async (req, res, next) => {
         res.status(400).json({ message: error })
     }
 }
+
 const deletePlant = async (req, res, next) => {
     try {
         const a_plant = await plant.findById(req.params.id)
         await a_plant.remove()
-        res.status(200).send('')
+        res.status(200).send('You just deleted a Plant')
         console.log('You just deleted a Plant')
     } catch (error) {
         res.status(400).json({ message: error })

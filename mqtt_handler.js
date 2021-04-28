@@ -25,6 +25,10 @@ class MqttHandler {
 
         // mqtt subscriptions
         this.mqttClient.subscribe('air-conditioner', { qos: 0 })
+        this.mqttClient.subscribe('fan', { qos: 0 })
+        this.mqttClient.subscribe('incandescent-bulbs', { qos: 0 })
+        this.mqttClient.subscribe('fountain', { qos: 0 })
+        this.mqttClient.subscribe('thermometer', { qos: 0 })
 
         // When a message arrives, console.log it
         this.mqttClient.on('message', async (topic, message) => {
@@ -36,8 +40,8 @@ class MqttHandler {
                 })
                 this.sendMessage(message)
                 await data.save()
-            } catch {
-                console.log("Loi roi Thach oi !!! ")
+            } catch (error) {
+                console.error(error)
             }
         });
 
@@ -47,8 +51,8 @@ class MqttHandler {
     }
 
     // Sends a mqtt message to topic: air-conditioner-respond
-    sendMessage(message) {
-        this.mqttClient.publish('air-conditioner-respond', message)
+    sendMessage(topic) {
+        this.mqttClient.publish(topic)
     }
 }
 
