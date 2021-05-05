@@ -37,6 +37,8 @@ const addSuggestionPlant = async (req, res, next) => {
             fileType: req.file.mimetype || '',
             fileSize: fileSizeFormatter(req.file.size, 2) // 0.00
         })
+
+        suggestion_plants.filePath = 'images/' + suggestion_plants.filePath.slice(7)
         await suggestion_plants.save()
         res.status(200).send('You just add another Suggestion Plant')
         console.log('You just add another Suggestion Plant')
@@ -58,6 +60,8 @@ const updateSuggestionPlant = async (req, res, next) => {
             suggestion_plants.filePath = req.file.path || '',
             suggestion_plants.fileType = req.file.mimetype || '',
             suggestion_plants.fileSize = fileSizeFormatter(req.file.size, 2) // 0.00
+
+        suggestion_plants.filePath = 'images/' + suggestion_plants.filePath.slice(7)
         await suggestion_plants.save()
         res.status(200).send('You just Suggestion updated a Plant')
         console.log('You just Suggestion updated a Plant')
