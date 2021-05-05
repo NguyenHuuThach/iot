@@ -25,7 +25,7 @@ module.exports.init = () => {
     app.use('/suggestion-plants', suggestionPlants)
     app.use('/info-iots', infoIOTs)
 
-    app.use('/public', express.static(path.join(__dirname, 'public')))
+    app.use('/public', express.static(path.join(__dirname, 'images')))
 
 
     return app;
