@@ -28,7 +28,8 @@ class MqttHandler {
         this.mqttClient.subscribe('fan', { qos: 0 })
         this.mqttClient.subscribe('incandescent-bulbs', { qos: 0 })
         this.mqttClient.subscribe('fountain', { qos: 0 })
-        this.mqttClient.subscribe('thermometer', { qos: 0 })
+        // this.mqttClient.subscribe('thermometer', { qos: 0 })
+        // this.mqttClient.subscribe('moist-next-to', { qos: 0 })
 
         // When a message arrives, console.log it
         this.mqttClient.on('message', async (topic, message) => {
@@ -36,8 +37,7 @@ class MqttHandler {
                 const data = new Data({
                     topic: topic,
                     user: JSON.parse(message).user,
-                    isStart: JSON.parse(message).isStart,
-                    temperature: JSON.parse(message).temperature || null
+                    isStart: JSON.parse(message).isStart
                 })
                 this.sendMessage(message)
                 await data.save()

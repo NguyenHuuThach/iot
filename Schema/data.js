@@ -13,10 +13,6 @@ const data = mongoose.Schema({
         type: Boolean,
         required: true
     },
-    humidity: {
-        type: Number,
-        required: false
-    },
     date: {
         type: Date,
         default: Date.now
