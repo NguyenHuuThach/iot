@@ -5,7 +5,7 @@ const Data = require('./Schema/data');
 class MqttHandler {
     constructor() {
         this.mqttClient = null;
-        this.host = 'mqtt://localhost:1883';
+        this.host = 'http://broker.hivemq.com/';
     }
 
     connect() {
