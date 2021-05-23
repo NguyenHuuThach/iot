@@ -24,23 +24,28 @@ class MqttHandler {
         });
 
         // mqtt subscriptions
-        this.mqttClient.subscribe('air-conditioner', { qos: 0 })
-        this.mqttClient.subscribe('fan', { qos: 0 })
-        this.mqttClient.subscribe('incandescent-bulbs', { qos: 0 })
-        this.mqttClient.subscribe('fountain', { qos: 0 })
+        // this.mqttClient.subscribe('air-conditioner', { qos: 0 })
+        // this.mqttClient.subscribe('fan', { qos: 0 })
+        // this.mqttClient.subscribe('incandescent-bulbs', { qos: 0 })
+        // this.mqttClient.subscribe('fountain', { qos: 0 })
+        // this.mqttClient.subscribe('test', { qos: 0 })
         // this.mqttClient.subscribe('thermometer', { qos: 0 })
-        // this.mqttClient.subscribe('moist-next-to', { qos: 0 })
+        this.mqttClient.subscribe('iot', { qos: 0 })
 
         // When a message arrives, console.log it
         this.mqttClient.on('message', async (topic, message) => {
             try {
-                const data = new Data({
-                    topic: topic,
-                    user: JSON.parse(message).user,
-                    isStart: JSON.parse(message).isStart
-                })
+                if (JSON.parse(message).sensorType == 1) {
+                    const data = new Data({
+                        topic: topic,
+                        sensorName: JSON.parse(message).sensorName,
+                        sensorType: JSON.parse(message).sensorType,
+                        user: JSON.parse(message).user,
+                        isStart: JSON.parse(message).isStart
+                    })
+                    await data.save()
+                }
                 this.sendMessage(message)
-                await data.save()
             } catch (error) {
                 console.error(error)
             }

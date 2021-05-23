@@ -4,6 +4,12 @@ const data = mongoose.Schema({
     topic: {
         type: String
     },
+    sensorType: {
+        type: Number
+    },
+    sensorName: {
+        type: String
+    },
     user: {
         type: String
     },
