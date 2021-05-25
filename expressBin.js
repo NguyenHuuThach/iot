@@ -9,6 +9,7 @@ const suggestionPlants = require('./Routes/suggestion_plant'); // Routes
 const infoIOTs = require('./Routes/info_iot'); // Routes
 const infoIOTsDevice = require('./Routes/info_iot_device'); // Routes
 const infoIOTsAgriculture = require('./Routes/info_iot_agriculture'); // Routes
+const user = require('./Routes/user'); // Routes
 
 module.exports.init = () => {
     const app = express()
@@ -28,6 +29,7 @@ module.exports.init = () => {
     app.use('/info-iots', infoIOTs)
     app.use('/info-iots-device', infoIOTsDevice)
     app.use('/info-iots-agriculture', infoIOTsAgriculture)
+    app.use('/', user)
 
     // app.use('/public', express.static(path.join(__dirname, 'images')))
     app.use('/images', express.static(path.join(__dirname, 'images')))
