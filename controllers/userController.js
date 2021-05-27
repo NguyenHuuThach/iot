@@ -5,7 +5,7 @@ const login = async (req, res, next) => {
     try {
         const user = await User.find({ userName: req.query.userName, password: req.query.password })
         if (user.length != 0) {
-            res.status(200).json({ user })
+            res.status(200).json(user)
             return
         }
         res.status(401).json({ status: 'Failed' })
@@ -33,7 +33,7 @@ const signUp = async (req, res, next) => {
                 user.filePath = 'images/' + user.filePath.slice(7)
             }
             await user.save()
-            res.status(200).send('Success!!! Congratulations!!!')
+            res.status(200).json(user)
             console.log('Another user')
             return
         }
