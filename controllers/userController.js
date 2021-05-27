@@ -20,6 +20,10 @@ const signUp = async (req, res, next) => {
     try {
         const already_exist = await User.find({ userName: req.query.userName })
         console.log(already_exist)
+        let avatar = ''
+        if (req.file) {
+            avatar = 'images/' + req.file.path.slice(7)
+        }
         if (already_exist.length == 0) {
             const user = new User({
                 userName: req.query.userName,
@@ -27,11 +31,11 @@ const signUp = async (req, res, next) => {
                 email: req.query.email,
                 phoneNumber: req.query.phoneNumber,
                 address: req.query.address,
-                avatar: req.file.path || '',
+                avatar: avatar
             })
-            if (user.filePath) {
-                user.filePath = 'images/' + user.filePath.slice(7)
-            }
+            // if (user.avatar) {
+            //     user.avatar = 'images/' + user.avatar.slice(7)
+            // }
             await user.save()
             res.status(200).json(user)
             console.log('Another user')
