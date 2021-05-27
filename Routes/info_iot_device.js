@@ -10,7 +10,7 @@ router.get('/', getListInforIOTsDevice)
 
 router.get('/:id', getInforIOTDevice)
 
-router.post('/', upload.single('file'), addInforIOTDevice)
+router.post('/', upload.single('file'), addInforIOTDevice) // 1 cái rout tao nhieu file, tach ra
 
 router.put('/:id', upload.single('file'), updateInforIOTDevice)
 
