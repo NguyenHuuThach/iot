@@ -2,7 +2,6 @@ const SuggestionPlant = require('../Schema/suggestion_plant')
 const { fileSizeFormatter } = require('../utils/file')
 
 
-
 const getListSuggestionPlants = async (req, res, next) => {
     try {
         const suggestion_plants = await SuggestionPlant.find()

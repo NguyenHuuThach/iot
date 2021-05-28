@@ -1,11 +1,23 @@
 const User = require('../Schema/user')
+const jwt = require('jsonwebtoken')
+
+
+function generateAccessToken(user) {
+    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1500000s' })
+}
 
 
 const login = async (req, res, next) => {
     try {
-        const user = await User.find({ userName: req.query.userName, password: req.query.password })
-        if (user.length != 0) {
-            res.status(200).json(user)
+        const user = await User.findOne({ userName: req.query.userName, password: req.query.password })
+        if (user) {
+            user.token = generateAccessToken({ userId: user._id })
+
+            res.status(200).json({
+                profile: user,
+                token: user.token
+            })
+
             return
         }
         res.status(401).json({ status: 'Failed' })
