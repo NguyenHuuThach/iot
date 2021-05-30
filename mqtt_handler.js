@@ -38,8 +38,11 @@ class MqttHandler {
                 if (JSON.parse(message).sensorType == 1) {
                     const data = new Data({
                         topic: topic,
+                        sensorID: JSON.parse(message).sensorID,
                         sensorName: JSON.parse(message).sensorName,
                         sensorType: JSON.parse(message).sensorType,
+                        isSchedule: JSON.parse(message).isSchedule,
+                        duration: JSON.parse(message).duration,
                         user: JSON.parse(message).user,
                         isStart: JSON.parse(message).isStart
                     })

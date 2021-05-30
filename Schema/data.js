@@ -4,11 +4,25 @@ const data = mongoose.Schema({
     topic: {
         type: String
     },
+    sensorID: {
+        type: Number,
+        require: true
+    },
     sensorType: {
         type: Number
     },
     sensorName: {
         type: String
+    },
+    isSchedule: {
+        type: Boolean,
+        require: true,
+        default: false
+    },
+    duration: {
+        type: Array,
+        require: true,
+        default: [0, 0]
     },
     user: {
         type: String

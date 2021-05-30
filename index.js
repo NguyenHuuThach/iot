@@ -46,6 +46,11 @@ connection.once("open", () => {
             case "insert":
                 const data = {
                     topic: change.fullDocument.topic,
+                    sensorName: change.fullDocument.sensorName,
+                    sensorID: change.fullDocument.sensorID,
+                    sensorType: change.fullDocument.sensorType,
+                    isSchedule: change.fullDocument.isSchedule,
+                    duration: change.fullDocument.duration,
                     user: change.fullDocument.user,
                     isStart: change.fullDocument.isStart,
                     date: change.fullDocument.date
