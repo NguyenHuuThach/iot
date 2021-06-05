@@ -29,14 +29,17 @@ const addPlant = async (req, res, next) => {
             temperature: req.query.temperature,
             humidity: req.query.humidity,
             water: req.query.water,
-            description: req.query.description,
-            fileName: req.file.originalname || '',
-            filePath: req.file.path || '',
-            fileType: req.file.mimetype || '',
-            fileSize: fileSizeFormatter(req.file.size, 2) // 0.00
+            description: req.query.description
+
         })
 
-        a_plant.filePath = 'images/' + a_plant.filePath.slice(7)
+        if (req.file) {
+            a_plant.fileName = req.file.originalname
+            a_plant.fileType = req.file.mimetype
+            a_plant.fileSize = fileSizeFormatter(req.file.size, 2) // 0.00
+            a_plant.filePath = 'images/' + req.file.path.slice(7)
+        }
+
         await a_plant.save()
         res.status(200).send('You just add another Plant')
         console.log('You just add another Plant')
@@ -49,17 +52,19 @@ const updatePlant = async (req, res, next) => {
     try {
         const a_plant = await plant.findById(req.params.id)
 
-        a_plant.title = req.query.title,
-            a_plant.temperature = req.query.temperature,
-            a_plant.humidity = req.query.humidity,
-            a_plant.water = req.query.water,
-            a_plant.description = req.query.description,
-            a_plant.fileName = req.file.originalname || '',
-            a_plant.filePath = req.file.path || '',
-            a_plant.fileType = req.file.mimetype || '',
-            a_plant.fileSize = fileSizeFormatter(req.file.size, 2) // 0.00
+        a_plant.title = req.query.title
+        a_plant.temperature = req.query.temperature
+        a_plant.humidity = req.query.humidity
+        a_plant.water = req.query.water
+        a_plant.description = req.query.description
 
-        a_plant.filePath = 'images/' + a_plant.filePath.slice(7)
+        if (req.file) {
+            a_plant.fileName = req.file.originalname
+            a_plant.fileType = req.file.mimetype
+            a_plant.fileSize = fileSizeFormatter(req.file.size, 2) // 0.00
+            a_plant.filePath = 'images/' + req.file.path.slice(7)
+        }
+
         await a_plant.save()
         res.status(200).send('You just updated a Plant')
         console.log('You just updated a Plant')

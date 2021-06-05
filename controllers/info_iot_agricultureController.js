@@ -25,14 +25,15 @@ const addInforIOTAgriculture = async (req, res, next) => {
     try {
         const info_iot_agriculture = new infoIOTAgriculture({
             title: req.query.title,
-            content: req.query.content,
-            fileName: req.file.originalname || '',
-            filePath: req.file.path || '',
-            fileType: req.file.mimetype || '',
-            fileSize: fileSizeFormatter(req.file.size, 2) // 0.00
+            content: req.query.content
         })
+        if (req.file) {
+            info_iot_agriculture.fileName = req.file.originalname
+            info_iot_agriculture.fileType = req.file.mimetype
+            info_iot_agriculture.fileSize = fileSizeFormatter(req.file.size, 2) // 0.00
+            info_iot_agriculture.filePath = 'images/' + req.file.path.slice(7)
+        }
 
-        info_iot_agriculture.filePath = 'images/' + info_iot_agriculture.filePath.slice(7)
         await info_iot_agriculture.save()
         res.status(200).send('You just add another info IOT')
         console.log('You just add another info IOT')
@@ -45,14 +46,16 @@ const updateInforIOTAgriculture = async (req, res, next) => {
     try {
         const info_iot_agriculture = await infoIOTAgriculture.findById(req.params.id)
 
-        info_iot_agriculture.title = req.query.title,
-            info_iot_agriculture.content = req.query.content,
-            info_iot_agriculture.fileName = req.file.originalname || '',
-            info_iot_agriculture.filePath = req.file.path || '',
-            info_iot_agriculture.fileType = req.file.mimetype || '',
-            info_iot_agriculture.fileSize = fileSizeFormatter(req.file.size, 2) // 0.00
+        info_iot_agriculture.title = req.query.title
+        info_iot_agriculture.content = req.query.content
 
-        info_iot_agriculture.filePath = 'images/' + info_iot_agriculture.filePath.slice(7)
+        if (req.file) {
+            info_iot_agriculture.fileName = req.file.originalname
+            info_iot_agriculture.fileType = req.file.mimetype
+            info_iot_agriculture.fileSize = fileSizeFormatter(req.file.size, 2) // 0.00
+            info_iot_agriculture.filePath = 'images/' + req.file.path.slice(7)
+        }
+
         await info_iot_agriculture.save()
         res.status(200).send('You just updated an info IOT')
         console.log('You just updated an info IOT')

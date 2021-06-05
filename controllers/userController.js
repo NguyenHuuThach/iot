@@ -30,13 +30,13 @@ const login = async (req, res, next) => {
 
 const signUp = async (req, res, next) => {
     try {
-        const already_exist = await User.find({ userName: req.query.userName })
+        const already_exist = await User.findOne({ userName: req.query.userName })
         console.log(already_exist)
         let avatar = ''
         if (req.file) {
             avatar = 'images/' + req.file.path.slice(7)
         }
-        if (already_exist.length == 0) {
+        if (!already_exist) {
             const user = new User({
                 userName: req.query.userName,
                 password: req.query.password,
@@ -45,11 +45,18 @@ const signUp = async (req, res, next) => {
                 address: req.query.address,
                 avatar: avatar
             })
-            // if (user.avatar) {
-            //     user.avatar = 'images/' + user.avatar.slice(7)
-            // }
+
             await user.save()
-            res.status(200).json(user)
+            const userSaved = await User.findOne({ userName: user.userName, password: user.password })
+
+            if (userSaved) {
+
+                userSaved.token = generateAccessToken({ userId: userSaved._id })
+            }
+            res.status(200).json({
+                profile: userSaved,
+                token: userSaved.token
+            })
             console.log('Another user')
             return
         }

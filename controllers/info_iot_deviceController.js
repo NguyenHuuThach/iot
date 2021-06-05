@@ -25,17 +25,19 @@ const addInforIOTDevice = async (req, res, next) => {
     try {
         const info_iot_device = new infoIOTDecive({
             title: req.query.title,
-            content: req.query.content,
-            fileName: req.file.originalname || '',
-            filePath: req.file.path || '',
-            fileType: req.file.mimetype || '',
-            fileSize: fileSizeFormatter(req.file.size, 2) // 0.00
+            content: req.query.content
         })
 
-        info_iot_device.filePath = 'images/' + info_iot_device.filePath.slice(7)
+        if (req.file) {
+            info_iot_device.fileName = req.file.originalname
+            info_iot_device.fileType = req.file.mimetype
+            info_iot_device.fileSize = fileSizeFormatter(req.file.size, 2) // 0.00
+            info_iot_device.filePath = 'images/' + req.file.path.slice(7)
+        }
+
         await info_iot_device.save()
-        res.status(200).send('You just add another info IOT')
-        console.log('You just add another info IOT')
+        res.status(200).send('You just update another info IOT')
+        console.log('You just update another info IOT')
     } catch (error) {
         res.status(400).json({ message: error })
     }
@@ -45,14 +47,16 @@ const updateInforIOTDevice = async (req, res, next) => {
     try {
         const info_iot_device = await infoIOTDecive.findById(req.params.id)
 
-        info_iot_device.title = req.query.title,
-            info_iot_device.content = req.query.content,
-            info_iot_device.fileName = req.file.originalname || '',
-            info_iot_device.filePath = req.file.path || '',
-            info_iot_device.fileType = req.file.mimetype || '',
-            info_iot_device.fileSize = fileSizeFormatter(req.file.size, 2) // 0.00
+        info_iot_device.title = req.query.title
+        info_iot_device.content = req.query.content
 
-        info_iot_device.filePath = 'images/' + info_iot_device.filePath.slice(7)
+        if (req.file) {
+            info_iot_device.fileName = req.file.originalname
+            info_iot_device.fileType = req.file.mimetype
+            info_iot_device.fileSize = fileSizeFormatter(req.file.size, 2) // 0.00
+            info_iot_device.filePath = 'images/' + req.file.path.slice(7)
+        }
+
         await info_iot_device.save()
         res.status(200).send('You just updated an info IOT')
         console.log('You just updated an info IOT')
